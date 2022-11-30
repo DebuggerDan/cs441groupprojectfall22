@@ -1,3 +1,4 @@
+
 from board import Board as bd
 Hidden_Pattern=[[' ']*10 for x in range(10)]
 Guess_Pattern=[[' ']*10 for x in range(10)]
