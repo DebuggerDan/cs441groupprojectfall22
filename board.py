@@ -61,3 +61,13 @@ class Board:
 
     def complete(self):
         return self.remaining_ships() == 0
+
+    def guess(self, row, col):
+        if self.board[row][col] == "X":
+            self.guesses[row][col] = "X"
+            return 1
+        elif self.board[row][col] == " ":
+            self.guesses[row][col] = "-"
+            return 0
+
+        return -1
