@@ -59,3 +59,5 @@ class Board:
 
         return 5 - count
 
+    def complete(self):
+        return self.remaining_ships() == 0
