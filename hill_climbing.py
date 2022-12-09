@@ -1,3 +1,3 @@
-class GreedySearch:
+class HillClimbing:
     def __init__(self):
         pass
