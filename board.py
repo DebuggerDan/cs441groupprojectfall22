@@ -6,6 +6,18 @@ class Board:
         self.reset()
 
     def _check_ship_placement(self, row, col, orientation, length):
+        """Checks whether a ship can be placed in a location without colliding
+        with other ships or falling off the board.
+
+        Args:
+            row (int): row to place ship in
+            col (int): column to place ship in
+            orientation (int): whether ship is horizontal (0) or vertical (1)
+            length (int): length of ship
+
+        Returns:
+            bool: whether ship can be placed in that location safely
+        """
         if orientation == 0:
             if col + length > 10:
                 return False
@@ -26,10 +38,17 @@ class Board:
         return True
 
     def reset(self):
+        """Resets the board."""
         self.board = [[' '] * 10 for _ in range(10)]
         self.guesses = [[' '] * 10 for _ in range(10)]
 
     def print_board(self, guesses=True):
+        """Prints the board to the command line.
+
+        Args:
+            guesses (bool, optional): Whether to print guess board instead of
+                hidden board. Defaults to True.
+        """
         print('   0 1 2 3 4 5 6 7 8 9')
         print('  *********************')
         letters = "ABCDEFGHIJ"
@@ -41,6 +60,11 @@ class Board:
         print('  *********************')
 
     def get_ship_location(self):
+        """Gets location of ship from command line input.
+
+        Returns:
+            int, int: row and column of ship as integers
+        """
         # Enter the row from A to J
         row = input('Please enter a ship row A-J: ').upper()
 
@@ -57,6 +81,7 @@ class Board:
 
     # Function that creates the ships
     def create_ships(self):
+        """Generates ships on board."""
         ship_sizes = [2, 3, 3, 4, 5]
 
         for ship in ship_sizes:
@@ -80,6 +105,7 @@ class Board:
                     generated = True
 
     def remaining_ships(self):
+        """Counts ships remaining on the board."""
         count = 0
 
         for row in self.guesses:
@@ -88,14 +114,29 @@ class Board:
         return 5 - count
 
     def complete(self):
+        """Checks if game is complete (all ships sunk).
+
+        Returns:
+            bool: whether there are ships remaining
+        """
         return self.remaining_ships() == 0
 
     def guess(self, row, col):
-        if self.board[row][col] == "X":
-            self.guesses[row][col] = "X"
-            return 1
-        elif self.board[row][col] == " ":
+        """Takes a turn to guesses whether a ship is on the board.
+
+        Args:
+            row (int): row of ship
+            col (int): column of ship
+
+        Returns:
+            int: -1 if already guessed; 0 if hit; 1 if hit
+        """
+        if self.guesses[row][col] != " ":
+            return -1
+
+        if self.board[row][col] == " ":
             self.guesses[row][col] = "-"
             return 0
-
-        return -1
+        else:
+            self.guesses[row][col] = "X"
+            return 1
