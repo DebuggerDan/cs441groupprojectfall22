@@ -20,21 +20,20 @@ class Board:
 
         print('  *********************')
 
-    def get_ship_location():
-        # Enter the row number between 1 to 10
-        row = input('Please enter a ship row 0-9: ').upper()
+    def get_ship_location(self):
+        # Enter the row from A to J
+        row = input('Please enter a ship row A-J: ').upper()
 
-        while row not in '0123456789':
-            row = input("Please enter a valid row 0-9:")
+        while row not in 'ABCDEFGHIJ' or len(row) > 1:
+            row = input("Please enter a valid row A-J:")
 
-        # Enter the Ship column from A TO H
+        # Enter the column from 0 to 9
         column = input('Please enter a ship column 0-9: ').upper()
 
-        while column not in '0123456789':
+        while column not in '0123456789' or len(column) > 1:
             column = input("Please enter a valid column 0-9: ")
 
-        # return int(row)-1,let_to_num[column]
-        return int(row)-1, int(column)-1
+        return ord(row) - ord('A'), int(column)
 
     # Function that creates the ships
     def create_ships(board):
