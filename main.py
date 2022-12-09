@@ -4,13 +4,9 @@ import sys
 
 from platform import python_version as identifypy
 from warops import sitrep
-
-from board import Board as bd
+from board import Board
 
 ## I. Global Constants & Initializations
-
-Hidden_Pattern = [[' '] * 10 for x in range(10)]
-Guess_Pattern = [[' '] * 10 for x in range(10)]
 
 TURNS = 10
 
@@ -18,49 +14,49 @@ TURNS = 10
 ## II. Main WOBR Battleship Simulation Function.
 
 def main():
-    bd.create_ships(Hidden_Pattern)
-    bd.print_board(Hidden_Pattern)
-    #turns = 10 # converted to global variable
+    bd = Board()
+    complete = False
     turnnum = TURNS
     print("./WOBR.sh: WELCOME, GENERAL.")
 
-    while turnnum > 0:
+    bd.create_ships()
+    bd.print_board(False)
+
+    while not complete:
         # print("./WOBR.sh: WELCOME, GENERAL.") # realized this was iteratively-looped lul
         print("./WOBR.sh: COMMENCING DUAL-PARTICIPANT NAVAL WAR GAMES "
               "THEATER SIMULATION...")
-        bd.print_board(Guess_Pattern)
-        row, column = bd.get_ship_location()
-        if Guess_Pattern[row][column] == '-':
-            print("./WOBR.sh: [ALERT #1] SELECTED COMBAT AREA ALREADY CLEARED.\n"
-                  "[INSERT REMAINING #] ENEMY VESSELS REMAIN OPERATIONAL IN "
-                  "COMBAT AREA.")
-        elif Hidden_Pattern[row][column] =='X':
-            print(
-                "./WOBR.sh: [ALERT #2] OPPONENT NAVAL VESSEL SUCCESSFULLY "
-                "DESTROYED.\n[INSERT REMAINING #] ENEMY VESSELS REMAIN "
-                "OPERATIONAL IN COMBAT AREA.")
-            Guess_Pattern[row][column] = 'X'
-            turnnum -= 1
+        bd.print_board()
+
+        row, col = bd.get_ship_location()
+        success = bd.guess(row, col)
+
+        if success == 1:
+            print("./WOBR.sh: [ALERT #2] OPPONENT NAVAL VESSEL SUCCESSFULLY "
+                  "DESTROYED.")
+        elif success == 0:
+            print("./WOBR.sh: [ALERT #3] PRE-EMPTIVE NAVAL STRIKE UNSUCCESSFUL.")
         else:
-            print("./WOBR.sh: [ALERT #3] PRE-EMPTIVE NAVAL STRIKE UNSUCCESSFUL.\n"
-                  "[INSERT REMAINING #] ENEMY VESSELS REMAIN OPERATIONAL IN "
-                  "COMBAT AREA.")
-            Guess_Pattern[row][column] = '-'
-            turnnum -= 1
-        if  bd.count_hit_ships(Guess_Pattern) == 5:
-            print("./WOBR.sh: [ALERT #4] CONGRATULATIONS. OPPONENT HAS BEEN "
-                  "TOTALLY ANNIHILATED.\n[INSERT WINNER'S NAME] HAS ACHIEVED "
-                  "NAVAL SUPERIORITY.")
-            break
+            print("./WOBR.sh: [ALERT #1] SELECTED COMBAT AREA ALREADY CLEARED.")
+
+        print(f"{bd.remaining_ships()} ENEMY VESSELS REMAIN OPERATIONAL IN "
+              f"COMBAT AREA.")
+
+        turnnum -= 1
 
         # realistic battleship-situation munitions lore for immersion
-        print(f"./WOBR.sh: OPPONENT [INSERT NAME] HAS:\n#{str(turnnum)} "
-              f"AGM-84H/K STANDOFF LAND ATTACK MISSILE-EXPANDED RESPONSE "
-              f"'SLAM-ER' HARPOON CRUISE MISSILES REMAINING .")
+        print(f"./WOBR.sh: PLAYER 1 HAS {str(turnnum)} AGM-84H/K STANDOFF "
+              f"LAND ATTACK MISSILE-EXPANDED RESPONSE 'SLAM-ER' HARPOON CRUISE "
+              f"MISSILES REMAINING.")
+
+        if bd.complete():
+            print("./WOBR.sh: [ALERT #4] CONGRATULATIONS. OPPONENT HAS BEEN "
+                  "TOTALLY ANNIHILATED.\nPLAYER 1 HAS ACHIEVED NAVAL SUPERIORITY.")
+            complete = True
 
         if turnnum == 0:
             print('Game Over')
-            break
+            complete = True
 
 if __name__ == "__main__":
     if sys.version_info.major >= 3:
