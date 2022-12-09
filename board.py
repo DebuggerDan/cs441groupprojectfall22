@@ -36,12 +36,20 @@ class Board:
         return ord(row) - ord('A'), int(column)
 
     # Function that creates the ships
-    def create_ships(board):
+    def create_ships(self):
         for ship in range(5):
-            ship_r, ship_cl = randint(0, 9), randint(0, 9)
-            while board[ship_r][ship_cl] == 'X':
-                ship_r, ship_cl = randint(0, 9), randint(0, 9)
-            board[ship_r][ship_cl] = 'X'
+            generated = False
+
+            while not generated:
+                ship_pos = randint(0, 99)
+                col, row = ship_pos % 10, ship_pos // 10
+
+                print(ship_pos)
+                print(row, col)
+
+                if self.board[row][col] == " ":
+                    self.board[row][col] = "X"
+                    generated = True
 
     def count_hit_ships(board):
         count = 0
