@@ -5,6 +5,26 @@ class Board:
     def __init__(self):
         self.reset()
 
+    def _check_ship_placement(self, row, col, orientation, length):
+        if orientation == 0:
+            if col + length > 10:
+                return False
+        else:
+            if row + length > 10:
+                return False
+
+        # swap 0 -> 1 and 1 -> 0 such that if orientation == 0 (horizontal),
+        # r = 0 and c = 1, and vice versa for orientation == 1.
+        r, c = orientation, orientation ^ 1
+
+        for i in range(length):
+            # if r == 1, it will add i to the row
+            # if c == 1, it will add i to the col
+            if self.board[row + (i * r)][col + (i * c)] == "X":
+                return False
+
+        return True
+
     def reset(self):
         self.board = [[' '] * 10 for _ in range(10)]
         self.guesses = [[' '] * 10 for _ in range(10)]
@@ -37,18 +57,26 @@ class Board:
 
     # Function that creates the ships
     def create_ships(self):
-        for ship in range(5):
+        ship_sizes = [2, 3, 3, 4, 5]
+
+        for ship in ship_sizes:
             generated = False
 
             while not generated:
                 ship_pos = randint(0, 99)
                 col, row = ship_pos % 10, ship_pos // 10
+                orientation = randint(0, 1) # 0 = horizontal, 1 = vertical
 
-                print(ship_pos)
-                print(row, col)
+                if self._check_ship_placement(row, col, orientation, ship):
+                    # swap 0 -> 1 and 1 -> 0 such that if orientation == 0 (horizontal),
+                    # r = 0 and c = 1, and vice versa for orientation == 1.
+                    r, c = orientation, orientation ^ 1
 
-                if self.board[row][col] == " ":
-                    self.board[row][col] = "X"
+                    for i in range(ship):
+                        # if r == 1, it will add i to the row
+                        # if c == 1, it will add i to the col
+                        self.board[row + (i * r)][col + (i * c)] = "X"
+
                     generated = True
 
     def remaining_ships(self):
