@@ -3,17 +3,15 @@ from random import randint
 
 # let_to_num={'A':0,'B':1, 'C':2,'D':3,'E':4,'F':5,'G':6,'H':7}
 class Board:
-    def print_board(board):
-        print('  1 2 3 4 5 6 7 8 9 10')
+    def print_board(self, guesses=True):
+        print('   0 1 2 3 4 5 6 7 8 9')
         print('  *********************')
-        row_num = 1
-        for row in board:
-            if row_num <= 9:
-                print(f"{row_num} |{'|'.join(row)}|")
-                row_num += 1
-            else:
-                row_num = 0
-                print(f"{row_num} |{'|'.join(row)}|")
+        letters = "ABCDEFGHIJ"
+
+        for i in range(len(self.board)):
+            print(f"{letters[i]} |"
+                  f"{'|'.join(self.guesses[i] if guesses else self.board[i])}|")
+
         print('  *********************')
 
     def get_ship_location():
