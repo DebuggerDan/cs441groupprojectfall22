@@ -51,12 +51,11 @@ class Board:
                     self.board[row][col] = "X"
                     generated = True
 
-    def count_hit_ships(board):
+    def remaining_ships(self):
         count = 0
 
-        for row in board:
-            for column in row:
-                if column == 'X':
-                    count += 1
+        for row in self.guesses:
+            count += row.count("X")
 
-        return count
+        return 5 - count
+
