@@ -1,8 +1,14 @@
 from random import randint
 
 
-# let_to_num={'A':0,'B':1, 'C':2,'D':3,'E':4,'F':5,'G':6,'H':7}
 class Board:
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.board = [[' '] * 10 for _ in range(10)]
+        self.guesses = [[' '] * 10 for _ in range(10)]
+
     def print_board(self, guesses=True):
         print('   0 1 2 3 4 5 6 7 8 9')
         print('  *********************')
