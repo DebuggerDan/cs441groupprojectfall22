@@ -30,24 +30,28 @@ class HillClimbing:
             successor.guess(hidden_board, row, col)
 
             if last_remaining > successor.remaining_squares():
-                return successor
+                return len(previous), successor
 
         return None
 
     @staticmethod
     def run():
         cycles = 100
+        current_cycle = 0
+        all_tries = []
+        guess = Board()
         hidden = Board()
+
         hidden.create_ships()
         hidden.print_board()
 
-        guess = Board()
-
-        current_cycle = 0
-
         while not guess.complete() and current_cycle < cycles:
-            guess = HillClimbing._generate_best_successor(hidden, guess)
+            tries, guess = HillClimbing._generate_best_successor(hidden, guess)
+            all_tries.append(tries)
             current_cycle += 1
 
-        print(f"Completed in {current_cycle} cycles. Final result:")
+        sum_tries = sum(all_tries)
+        print(f"Completed in {sum_tries} tries, with an average of "
+              f"{round(sum_tries / len(all_tries), 1)} per successor. "
+              f"Final result:")
         guess.print_board()
