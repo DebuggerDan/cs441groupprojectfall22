@@ -14,6 +14,12 @@ from board import Board
 
 TURNS = 10
 
+# Opponent values coorrelate to the following:
+# 0 = Manual (User-Input)
+# 1 = Genetic Algorithm
+# 2 = Hill-Climbing Algorithm
+
+OPPONENT_ONE = 1
 
 ## II. Main WOBR Battleship Simulation Function.
 
