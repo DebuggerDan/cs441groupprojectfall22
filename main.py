@@ -1,3 +1,7 @@
+### CS 441, Fall 2022 - Group Project: Battleships - Main Program
+### Primary Objectives: main(), initialization, etc.
+### Alana G., Dan J., & Evan L.
+
 import time
 import random as rnd
 import sys
