@@ -2,6 +2,11 @@
 ### Primary Objectives: class GeneticAlgorithm(), helper functions, & misc. data-processing functions.
 ### Alana G., Dan J., & Evan L.
 
+import numpy as np
+import math
+from board import Board
+import random as rnd
+
 # function Genetic-Algorithm(population, Fitness-Fn) returns an individual
 #     inputs: population, a set of individuals
 #             Fitness-Fn, a function that measures the fitness of an individual
@@ -22,6 +27,15 @@
 #     n <- Length(x)
 #     c <- random number from 1 to n
 #     return Append(Substring(x, 1, c), Substring(y, c + 1, n))
+
+## I. Initialization:
+
+# Number of the initial 'guess' boards as the starting population
+INITIAL_POPULATION = 10
+
+ROWS = 10
+COLUMNS = 10
+
 
 class GeneticAlgorithm:
     @staticmethod

@@ -2,6 +2,11 @@
 ### Primary Objectives: class HillClimbing(), helper functions, & misc. data-processing functions.
 ### Alana G., Evan L., & Dan J.
 
+import numpy as np
+import math
+from board import Board
+import random as rnd
+
 # function Hill-Climbing(problem) returns a state that is a local maximum
 #     current <- Make-Node(problem.Initial-State)
 #     loop do
