@@ -2,13 +2,6 @@
 ### Primary Objectives: class HillClimbing(), helper functions, & misc. data-processing functions.
 ### Alana G., Evan L., & Dan J.
 
-# function Hill-Climbing(problem) returns a state that is a local maximum
-#     current <- Make-Node(problem.Initial-State)
-#     loop do
-#         neighbor <- a highest-value successor of current
-#         if neighbor.Value <= current.Value then return current.State
-#         current <- neighbor
-
 from board import Board
 from random import randint
 

@@ -4,8 +4,6 @@
 
 import numpy as np
 import matplotlib
-# import random as rnd # for radnom number added to picture but prolly will
-# just append date-time, if possible
 
 matplotlib.use('Agg')
 
