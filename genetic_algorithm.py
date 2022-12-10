@@ -38,10 +38,10 @@ class GeneticAlgorithm:
     def genChild(self, num):
         newguessboard = Board()
         newguessboard.create_ships()
-        if num == 0 or num == 99:
-            print("./WOBR.sh: [GENETIC ALGORITHM] INITIAL POPULATION GUESSBOARD #" +
-                f"{str(num + 1)}:")
-            newguessboard.print_board()
+        # if num == 0 or num == 99:
+        print("./WOBR.sh: [GENETIC ALGORITHM] INITIAL POPULATION GUESSBOARD #" +
+            f"{str(num + 1)}:")
+        newguessboard.print_board()
         return newguessboard
 
     def randMove(self):
