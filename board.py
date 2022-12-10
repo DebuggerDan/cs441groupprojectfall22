@@ -2,48 +2,22 @@
 ### Primary Objectives: class Board(), initialization of ships, turns, & other game miscellany.
 ### Alana G., Dan J., & Evan L.
 
-from random import randint, shuffle, randrange
+from random import randint
 
-
-## I. Initialization:
-
-# Number of the initial 'guess' boards as the starting population
-POPULATION = 100
-
-ROWS = 10
-COLUMNS = 10
-
-MUTATIONRATE = 1
-
-# I. Helper Functions
-
-def genPos(boardtype):
-    return genRows(boardtype)
-
-def genRows(boardtype):
-    if boardtype == 1: # 1 = Genetic Algorithm
-        pos = list(range)
-        shuffle(pos)
-        
-        return pos
-    # if boardtype == 2: #2 = Hill-Climbing Algorithm
-    
-# def genFitness(boardtype):
-#     if boardtype == 1: # 1 = Genetic Algorithm
-
-
-# II. Board Class
 
 class Board:
-    def __init__(self, boardtype=None, pos=None, fitness=None):
-        self.reset()
-        self.remainingsquares = 0
-        self.totalsquares = 0
-        self.boardtype = boardtype if boardtype else 1
-        self.pos = pos if pos else genPos(self.boardtype)
-        self.fitness = fitness if fitness else 0
+    ship_sizes = [2, 3, 3, 4, 5]
+    ship_total = 17 # sum of ship_sizes
 
-    def _check_ship_placement(self, row, col, orientation, length):
+    def __init__(self, other_board=None):
+        self.reset()
+
+        if other_board:
+            for i in range(len(other_board.board)):
+                self.board[i] = other_board.board[i].copy()
+
+    @staticmethod
+    def _check_ship_placement(board, row, col, orientation, length):
         """Checks whether a ship can be placed in a location without colliding
         with other ships or falling off the board.
 
@@ -70,7 +44,7 @@ class Board:
         for i in range(length):
             # if r == 1, it will add i to the row
             # if c == 1, it will add i to the col
-            if self.board[row + (i * r)][col + (i * c)] == "X":
+            if board[row + (i * r)][col + (i * c)] == "X":
                 return False
 
         return True
@@ -78,24 +52,24 @@ class Board:
     def reset(self):
         """Resets the board."""
         self.board = [[' '] * 10 for _ in range(10)]
-        self.guesses = [[' '] * 10 for _ in range(10)]
-        self.remainingships = 0
-        self.totalsquares = 0
 
-    def print_board(self, guesses=True):
-        """Prints the board to the command line.
+    def copy(self):
+        result = Board()
 
-        Args:
-            guesses (bool, optional): Whether to print guess board instead of
-                hidden board. Defaults to True.
-        """
+        for i in range(len(self.board)):
+            result.board[i] = self.board[i].copy()
+
+        return result
+
+    def print_board(self):
+        """Prints the board to the command line."""
         print('   0 1 2 3 4 5 6 7 8 9')
         print('  *********************')
         letters = "ABCDEFGHIJ"
 
         for i in range(len(self.board)):
             print(f"{letters[i]} |"
-                  f"{'|'.join(self.guesses[i] if guesses else self.board[i])}|")
+                  f"{'|'.join(self.board[i])}|")
 
         print('  *********************')
 
@@ -122,9 +96,7 @@ class Board:
     # Function that creates the ships
     def create_ships(self):
         """Generates ships on board."""
-        ship_sizes = [2, 3, 3, 4, 5]
-
-        for ship in ship_sizes:
+        for ship in Board.ship_sizes:
             generated = False
 
             while not generated:
@@ -132,7 +104,8 @@ class Board:
                 col, row = ship_pos % 10, ship_pos // 10
                 orientation = randint(0, 1) # 0 = horizontal, 1 = vertical
 
-                if self._check_ship_placement(row, col, orientation, ship):
+                if Board._check_ship_placement(self.board, row, col,
+                                               orientation, ship):
                     # swap 0 -> 1 and 1 -> 0 such that if orientation == 0 (horizontal),
                     # r = 0 and c = 1, and vice versa for orientation == 1.
                     r, c = orientation, orientation ^ 1
@@ -143,17 +116,15 @@ class Board:
                         self.board[row + (i * r)][col + (i * c)] = "X"
 
                     generated = True
-                    
-        self.remainingsquares, self.totalsquares = self.remaining_ships()
 
-    def remaining_ships(self):
-        """Counts ships remaining on the board."""
+    def remaining_squares(self):
+        """Counts squares remaining on the board."""
         count = 0
 
-        for row in self.guesses:
+        for row in self.board:
             count += row.count("X")
 
-        return count
+        return Board.ship_total - count
 
     def complete(self):
         """Checks if game is complete (all ships sunk).
@@ -161,25 +132,25 @@ class Board:
         Returns:
             bool: whether there are ships remaining
         """
-        return self.remaining_ships() == 0
+        return self.remaining_squares() == 0
 
-    def guess(self, row, col):
+    def guess(self, other_board, row, col):
         """Takes a turn to guesses whether a ship is on the board.
 
         Args:
+            other_board (Board): other board to compare against
             row (int): row of ship
             col (int): column of ship
 
         Returns:
             int: -1 if already guessed; 0 if not hit; 1 if hit
         """
-        if self.guesses[row][col] != " ":
+        if self.board[row][col] != " ":
             return -1
 
-        if self.board[row][col] == " ":
-            self.guesses[row][col] = "-"
+        if other_board.board[row][col] == " ":
+            self.board[row][col] = "-"
             return 0
         else:
-            self.guesses[row][col] = "X"
-            self.remainingsquares -= 1
+            self.board[row][col] = "X"
             return 1
