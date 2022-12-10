@@ -5,6 +5,8 @@
 import time
 import random as rnd
 import sys
+import genetic_algorithm as genalgo
+import hill_climbing as hillalgo
 
 from platform import python_version as identifypy
 from warops import sitrep

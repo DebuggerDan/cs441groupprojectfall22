@@ -56,23 +56,6 @@ def genRows():
     
     return pos
 
-def concurrentAttacks(pos, currboard):
-    attacks = 0
-    
-    for idx1 in range(currboard.totalsquares):
-        for idx2 in range(idx1 + 1, currboard.totalsquares):
-            if attack(idx1, idx2, pos[idx1], pos[idx2]):
-                attacks += 1
-
-    return attacks
-
-def maxConcurrentAttacks():
-    return math.comb(QUEENS, 2)
-
-def genFit(pos):
-    return maxConcurrentAttacks() - concurrentAttacks(pos) + 1
-
-
 def genBoard():
     #if self.initialBoard is None:
     #    newboard = Board()
@@ -133,30 +116,72 @@ def attack(col1, col2, row1, row2):
     return self.attackCrossover(col1, col2, row1, row2) \
         or self.attackHorizontal(row1, row2)
         
-def uniqueCrossover(firstparent, secondparent):
+def concurrentAttacks(pos, currboard):
+    attacks = 0
+    
+    for idx1 in range(currboard.totalsquares):
+        for idx2 in range(idx1 + 1, currboard.totalsquares):
+            if attack(idx1, idx2, pos[idx1], pos[idx2]):
+                attacks += 1
+
+    return attacks
+
+def maxConcurrentAttacks(currboard):
+    return math.comb(currboard.totalsquares)
+        
+def genFit(pos, currboard):
+    return maxConcurrentAttacks(currboard) - concurrentAttacks(pos, currboard) + 1        
+
+def crossOver(firstparent, secondparent):
     firstchild, secondchild = uniqueCriss(firstparent, secondparent)
     
     firstchild = mutation(firstchild)
     secondchild = mutation(secondchild)
     
-    return GuessPos(firstchild), GuessPos(secondchild)
+    return board.Board(1, firstchild), board.Board(1, secondchild)
     
+def uniqueCriss(firstparent, secondparent):
+    
+    randpos = rnd.randrange(1, COLUMNS - 1)
+    
+    firstchild = []
+    secondchild = []
+    
+    for idx1 in range(0, COLUMNS):
+        for idx2 in range(0, randpos):
+            if secondparent.pos[idx1] == firstparent.pos[idx2]:
+                firstchild.append(secondparent.pos[idx1])
+    
+    for idx in range(randpos, COLUMNS):
+        firstchild.append(firstparent.pos[idx])
+        
+    for idx in range(0, randpos):
+        secondchild.append(secondparent.pos[idx])
+        
+    
+    for idx1 in range(0, COLUMNS):
+        for idx2 in range(randpos, COLUMNS):
+            if firstparent.pos[idx1] == secondparent.pos[idx2]:
+                secondchild.append(firstparent.pos[idx1])
+                
+    return firstchild, secondchild
+
+
 #@staticmethod
 def mutation(self, child):
-    if rnd.uniform(0,1) < self.mutagen / 100:
-        idx = rnd.sample(range(0, self.colnum), 2)
+    if rnd.uniform(0,1) < MUTATIONRATE / 100:
+        idx = rnd.sample(range(0, COLUMNS), 2)
         curr = child[idx[0]]
         
         child[idx[0]] = child[idx[1]]
         child[idx[1]] = curr
         
         return child
-    pass
 
-#@staticmethod
-def _reproduce():
-    pass
+# #@staticmethod
+# def _reproduce():
+#     pass
 
-#@staticmethod
-def run():
-    pass
+# #@staticmethod
+# def run():
+#     pass
