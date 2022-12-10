@@ -5,17 +5,24 @@
 import time
 import random as rnd
 import sys
-import genetic_algorithm as genalgo
-import hill_climbing as hillalgo
 
 from platform import python_version as identifypy
-from warops import sitrep
+# from warops import sitrep
 from board import Board
+from genetic_algorithm import GeneticAlgorithm
 from hill_climbing import HillClimbing
 
 ## I. Global Constants & Initializations
 
 TURNS = 10
+
+## Ia. Genetic Algorithm Constants & Initializations
+POPULATIONSIZE = 100
+MUTATION_RATE = 1
+CROSSOVER_RATE = 0.5
+ELITES = 2
+TOURNAMENT = 5
+ITERATIONS = 100
 
 # Opponent values coorrelate to the following:
 # 0 = Manual (User-Input)
@@ -32,6 +39,15 @@ def main():
     turnnum = TURNS
     print("./WOBR.sh: WELCOME, GENERAL.")
 
+    ## Part A: Genetic Algorithm
+    genalgo = GeneticAlgorithm(POPULATIONSIZE, MUTATION_RATE, CROSSOVER_RATE, ELITES, TOURNAMENT)
+    geneticResults = genalgo.run(ITERATIONS)
+    print("\n./WOBR.sh: The Genetic Algorithmic Solution: " + str(geneticResults))
+    print("./WOBR.sh: Fitness : " + str(genalgo.getFit(geneticResults)))
+    
+    ## Part B: Hill-Climbing Algorithm
+    print("\n./WOBR.sh: Hill-Climbing Algorithmic Solution: ")
+    
     hill_climbing = HillClimbing()
     hill_climbing.run()
 

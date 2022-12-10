@@ -2,11 +2,10 @@
 ### Primary Objectives: class GeneticAlgorithm(), helper functions, & misc. data-processing functions.
 ### Alana G., Dan J., & Evan L.
 
-import numpy as np
-import math
-import board as board
+from board import Board
 import random as rnd
 
+# From Class Textbook, Russel, Norvig, 3rd Ed., pg 137:
 # function Genetic-Algorithm(population, Fitness-Fn) returns an individual
 #     inputs: population, a set of individuals
 #             Fitness-Fn, a function that measures the fitness of an individual
@@ -32,55 +31,22 @@ import random as rnd
 
 # Number of the initial 'guess' boards as the starting population
 POPULATION = 100
+TURNS = 100
 
 ROWS = 10
 COLUMNS = 10
 
 MUTATIONRATE = 1
 
-# class Moves:
-
 ## II. Helper Functions:
+# def genPos():
+#     return genRows()
 
-# class Guess:
-#     def __init__(self, pos=None):
-#         self.pos = pos if pos else genPos()
-#         self.fitness = genFit(self.pos)
-
-def genPos():
-    return genRows()
-
-def genRows():
-    pos = list(range(ROWS))
-    rnd.shuffle(pos)
+# def genRows():
+#     pos = list(range(ROWS))
+#     rnd.shuffle(pos)
     
-    return pos
-
-def genBoard():
-    #if self.initialBoard is None:
-    #    newboard = Board()
-    #    print("./WOBR.sh: INITIALIZATION OF GENETIC ALGORITHM...")
-    #    newboard.create_ships()
-    #    print("./WOBR.sh: INITIAL BOARD GENERATED AS FOLLOWS:")
-    #   newboard.print_board(False)
-    #    return newboard
-    #else:
-        newboard = board.Board()
-        newboard.create_ships()
-        return newboard
-
-def random():
-    randompos = []
-
-    for _ in range(ROWS):
-        randompos.append(rnd.randrange(0, COLUMNS))
-
-def initialPopulation(populationsize):
-    #initBoard = initialBoard if initialBoard else self.initialBoard
-    thehighseas = []
-    
-    for _ in range(populationsize):
-        thehighseas.append(board.Board())
+#     return pos
 
 ## III. Genetic Algorithm:
 # class GeneticAlgorithm(self, (if available parameters to follow:) initialBoard, initialPopulation, population, mutagen, rownum, colnum)
@@ -99,89 +65,123 @@ def initialPopulation(populationsize):
 
     #     for _ in range(self.rownum):
     #         randompos.append(rnd.randrange(0, self.colnum))
-            
-def genRows():#self):
-    pos = list(range(self.rownum))
-    rnd.shuffle(pos)
-    return pos
-
-def attackCrossover(col1, col2, row1, row2):
-    return (row1 + col1) == (row2 + col2) or \
-        ((self.rownum - 1 - row1) + col1) == ((self.rownum - 1 - row2) + col2)
+    
+class GeneticAlgorithm:
+    def __init__(self, populationsize=None, mutagenrate=None, crossoverrate=None, elites=None, tournamentsize=None):#, childlength=C):
+        self.populationsize = populationsize if populationsize else POPULATION
+        self.mutagenrate = mutagenrate if mutagenrate else MUTATIONRATE / 100
+        self.crossoverrate = crossoverrate if crossoverrate else self.mutagenrate
+        self.elites = elites if elites else 2
+        self.tournamentsize = tournamentsize if tournamentsize else 5
+        self.childlength = 10 
+        self.population = self.init_population()
+        #genRows()
         
-def attackHorizontal(row1, row2):
-    return row1 == row2
-
-def attack(col1, col2, row1, row2):
-    return self.attackCrossover(col1, col2, row1, row2) \
-        or self.attackHorizontal(row1, row2)
+    def init_population(self):
+        population = []
+        for _ in range(0, self.populationsize):
+            population.append(self.generate_child())
+        return population
+    
+    def generate_child(self):
+        child = []
+        for _ in range(0, self.childlength):
+            child.append(rnd.randint(0, 1))
+        return child
+    
+    def guessMove(hboard, gboard):
+        guessPos = rnd.randint(0, 99)
+        prev = []
+        remainingsquares = Board.remaining_squares()
         
-def concurrentAttacks(pos, currboard):
-    attacks = 0
-    
-    for idx1 in range(currboard.totalsquares):
-        for idx2 in range(idx1 + 1, currboard.totalsquares):
-            if attack(idx1, idx2, pos[idx1], pos[idx2]):
-                attacks += 1
-
-    return attacks
-
-def maxConcurrentAttacks(currboard):
-    return math.comb(currboard.totalsquares)
-        
-def genFit(pos, currboard):
-    return maxConcurrentAttacks(currboard) - concurrentAttacks(pos, currboard) + 1        
-
-def crossOver(firstparent, secondparent):
-    firstchild, secondchild = uniqueCriss(firstparent, secondparent)
-    
-    firstchild = mutation(firstchild)
-    secondchild = mutation(secondchild)
-    
-    return board.Board(1, firstchild), board.Board(1, secondchild)
-    
-def uniqueCriss(firstparent, secondparent):
-    
-    randpos = rnd.randrange(1, COLUMNS - 1)
-    
-    firstchild = []
-    secondchild = []
-    
-    for idx1 in range(0, COLUMNS):
-        for idx2 in range(0, randpos):
-            if secondparent.pos[idx1] == firstparent.pos[idx2]:
-                firstchild.append(secondparent.pos[idx1])
-    
-    for idx in range(randpos, COLUMNS):
-        firstchild.append(firstparent.pos[idx])
-        
-    for idx in range(0, randpos):
-        secondchild.append(secondparent.pos[idx])
-        
-    
-    for idx1 in range(0, COLUMNS):
-        for idx2 in range(randpos, COLUMNS):
-            if firstparent.pos[idx1] == secondparent.pos[idx2]:
-                secondchild.append(firstparent.pos[idx1])
+        for _ in range(100):
+            while square == -1 or square in prev:
+                square = rnd.randint(0, 99)
+                prev.append(square)
                 
-    return firstchild, secondchild
-
-
-#@staticmethod
-def mutation(self, child):
-    if rnd.uniform(0,1) < MUTATIONRATE / 100:
-        idx = rnd.sample(range(0, COLUMNS), 2)
-        curr = child[idx[0]]
+            row, col = guessPos // 10, guessPos % 10
+            successor = Board(gboard)
+            successor.guess(hboard, row, col)
+            
+            if remainingsquares > successor.remaining_squares():
+                return successor
+            
+        return None
         
-        child[idx[0]] = child[idx[1]]
-        child[idx[1]] = curr
+    # IIIa. Genetic Algorithm: Calculation Helper Functions 
         
+    def getFit(self, child):
+        fitness = 0
+        for idx in range(0, len(child)):
+            if child[idx] == 1:
+                fitness += 1
+        return fitness
+
+      
+    def getPopFit(self, population):
+        population_fitness = 0
+        for idx in range(0, len(population)):
+            population_fitness += self.getFit(population[idx])
+        return population_fitness
+    
+    
+    def getBestChild(self, population):
+        best = population[0]
+        for idx in range(0, len(population)):
+            if self.getFit(population[idx]) > self.getFit(best):
+                best = population[idx]
+        return best
+    
+    # IIIb. Genetic Algorithm: Mutation, Selection, & Crossover-Evolution Functions
+    
+    def mutate(self, child):
+        for idx in range(0, len(child)):
+            if rnd.random() < self.mutagenrate:
+                if child[idx] == 0:
+                    child[idx] = 1
+                else:
+                    child[idx] = 0
         return child
 
-# #@staticmethod
-# def _reproduce():
-#     pass
+    def selection(self, population):
+        currpopulation = []
+        mutagenrate = 0
+        if self.elites:
+            currpopulation.append(self.getBestChild(population))
+            mutagenrate = 1
+        for _ in range(mutagenrate, len(population)):
+            parent1 = self.tourny(population)
+            parent2 = self.tourny(population)
+            child = self.crossover(parent1, parent2)
+            currpopulation.append(self.mutate(child))
+        return currpopulation
 
-# #@staticmethod
-# def run():
-#     pass
+    def tourny(self, population):
+        tourny = []
+        for _ in range(0, self.tournamentsize):
+            random_id = rnd.randint(0, len(population) - 1)
+            tourny.append(population[random_id])
+        tournament_best = tourny[0]
+        for idx2 in range(0, len(tourny)):
+            if self.getFit(tourny[idx2]) > self.getFit(tournament_best):
+                tournament_best = tourny[idx2]
+        return tournament_best
+
+    def crossover(self, parent1, parent2):
+        child = []
+        for idx in range(0, len(parent1)):
+            if rnd.random() < self.crossoverrate and idx > 0:
+                child.append(parent1[idx])
+            else:
+                child.append(parent2[idx])
+        return child
+    
+    # IIIc. Genetic Algorithm: Initialization Functions
+    
+    def run(self, epochs):
+        population = self.init_population()
+        for _ in range(0, epochs):
+            population = self.selection(population)
+            
+        print("./WOBR.sh: Initial Genetic Algorithm Population Fitness: " + str(self.getPopFit(population)))
+        return self.getBestChild(population)
