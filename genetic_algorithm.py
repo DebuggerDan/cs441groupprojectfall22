@@ -90,7 +90,7 @@ class GeneticAlgorithm:
         # return child
         newguessboard = Board()
         newguessboard.create_ships()
-        print("./WOBR.sh: [GENETIC ALGORITHM] INITIAL POPULATION GUESSBOARD #" + str(num) + ":")
+        print("./WOBR.sh: [GENETIC ALGORITHM] INITIAL POPULATION GUESSBOARD #" + str(num + 1) + ":")
         newguessboard.print_board()
         return newguessboard
     
