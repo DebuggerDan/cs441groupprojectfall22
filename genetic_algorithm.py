@@ -138,7 +138,7 @@ class GeneticAlgorithm:
     def getBestChild(self):
         best = None
         for idx in range(0, len(self.population)):
-            if best is None or self.getFit(self.population[idx]) > self.getFit(best):
+            if best is None or self.getFit(self.population[idx]) < self.getFit(best):
                 best = self.population[idx]
         return best
     
@@ -209,10 +209,14 @@ class GeneticAlgorithm:
         for _ in range(0, generations):
             #population = self.selection(population)
             self.selection()
-            if best is None or self.getFit(self.getBestChild()) > self.getFit(best):
-                best = self.getBestChild()
-            bestfitdata.append(self.getFit(self.getBestChild()))
-            avgfitdata.append(self.getAvgFit())
+            # if best is None or self.getFit(self.getBestChild()) > self.getFit(best):
+            #     best = self.getBestChild()
+            #bestfitdata.append(self.getFit(self.getBestChild()))
+            #avgfitdata.append(self.getAvgFit())
+        
+        bestfitdata = self.getFit(self.getBestChild())
+        avgfitdata = self.getAvgFit()
+        best = self.getBestChild()
         
         return bestfitdata, avgfitdata, best
             
