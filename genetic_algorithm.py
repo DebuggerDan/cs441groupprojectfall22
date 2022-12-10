@@ -38,7 +38,6 @@ class GeneticAlgorithm:
     def genChild(self, num):
         newguessboard = Board()
         newguessboard.create_ships()
-        # if num == 0 or num == 99:
         print("./WOBR.sh: [GENETIC ALGORITHM] INITIAL POPULATION GUESSBOARD #" +
             f"{str(num + 1)}:")
         newguessboard.print_board()
@@ -116,7 +115,8 @@ class GeneticAlgorithm:
         highlander = None
         for _ in range(self.tournamentsize):
             idx = rnd.randint(0, len(self.population) - 1)
-            if highlander is None or self.getFit(self.population[idx]) > self.getFit(highlander):
+            if highlander is None or \
+               self.getFit(self.population[idx]) > self.getFit(highlander):
                 highlander = self.population[idx]
         return highlander
 

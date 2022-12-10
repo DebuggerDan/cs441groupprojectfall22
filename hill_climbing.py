@@ -37,19 +37,21 @@ class HillClimbing:
 
         hidden.create_ships()
         hidden.print_board()
-        
+
         while not guess.complete() and current_cycle < cycles:
             tries, guess = HillClimbing._generate_best_successor(hidden, guess)
-            print("./WOBR.sh: [HILL-CLIMBING ALGORITHM] Cycle #" + str(current_cycle + 1) + " with " + str(tries) + " tries:")
+            print(f"./WOBR.sh: [HILL-CLIMBING ALGORITHM] Cycle "
+                  f"#{str(current_cycle + 1)} with {str(tries)} tries:")
             guess.print_board()
             all_tries.append(tries)
             current_cycle += 1
 
         sum_tries = sum(all_tries)
-        print(f"./WOBR.sh: [HILL-CLIMBING ALGORITHM] Completed in a cumulative total of {sum_tries} tries, with an average of "
+        print(f"./WOBR.sh: [HILL-CLIMBING ALGORITHM] Completed a total of "
+              f"{sum_tries} tries, with an average of "
               f"{round(sum_tries / len(all_tries), 1)} tries per successor. "
               f"Final result:")
         guess.print_board()
-        
+
         avgfitness = round(sum_tries) / len(all_tries)
         return avgfitness

@@ -3,9 +3,8 @@
 ### Alana G., Dan J., & Evan L.
 
 import sys
-import numpy as np
 
-from platform import python_version as identifypy
+from platform import python_version
 from genetic_algorithm import GeneticAlgorithm
 from hill_climbing import HillClimbing
 from warops import sitrep
@@ -35,94 +34,50 @@ OPPONENT_ONE = 1
 def main():
     print("./WOBR.sh: WELCOME, GENERAL.")
 
-    x1points = []
-    x2points = []
+    x1points = list(range(1, ITERATIONS + 1))
+    x2points = list(range(1, ITERATIONS + 1))
     y1points = []
     y2points = []
-    
-   # x1points = np.append(x1points, 0)
-    #y1points = np.append(y1points, 0)
-    # y1points = list(range(1, ITERATIONS + 1))]
-    # y2points = list(range(1, ITERATIONS + 1))
 
     ## Part A: Genetic Algorithm
-    #geneticresults = []
-    print("./WOBR.sh: A.) [Genetic Algorithmic] Solution (with first & last initial guess-boards displayed, rest redacted for brevity) for Iteration #" + str(1) + ":")
-    genalgo = GeneticAlgorithm(POPULATIONSIZE, MUTATIONRATE, CROSSOVERRATE,
-                                ELITES, TOURNAMENT)
-        
-    x1points = np.append(x1points, 1)
-    y1points = np.append(y1points, genalgo.run(GENERATIONS))
-    
-    for idx in range(ITERATIONS - 1):
-        print("./WOBR.sh: A.) [Genetic Algorithmic] Solution for Iteration #" + str(idx + 2) + ":")
+    for idx in range(ITERATIONS):
+        print(f"./WOBR.sh: A.) [Genetic Algorithmic] Solution for Iteration "
+              f"#{str(idx + 1)}:")
         genalgo = GeneticAlgorithm(POPULATIONSIZE, MUTATIONRATE, CROSSOVERRATE,
                                 ELITES, TOURNAMENT)
-        
-        x1points = np.append(x1points, idx + 2)
-        y1points = np.append(y1points, genalgo.run(GENERATIONS))
-        
-    # for x1 in range(int(len(geneticresults) / ITERATIONS)):
-    #     x1point = x1 * ITERATIONS
-    #     y1point = 0
-        
-    #     for y1 in range(ITERATIONS):
-    #         y1point += geneticresults[x1 * ITERATIONS + y1]
-        
-    #     y1point /= ITERATIONS
-        
-    #     x1points.append(x1point)
-    #     y1points.append(y1point)
+
+        y1points.append(genalgo.run(GENERATIONS))
+
+    print()
 
     ## Part B: Hill-Climbing Algorithm
-    #hillresults = []
-    
-    print()
-    print("./WOBR.sh: B.) [Hill-Climbing Algorithmic] Solution for Iteration #" + str(idx + 1) + ":")
-
-    hill_climbing = HillClimbing()
-    
-    x2points = np.append(x2points, 1)
-    y2points = np.append(y2points, hill_climbing.run())
-    
-    for idx in range(ITERATIONS - 1):
+    for idx in range(ITERATIONS):
         print()
-        print("./WOBR.sh: B.) [Hill-Climbing Algorithmic] Solution for Iteration #" + str(idx + 2) + ":")
+        print(f"./WOBR.sh: B.) [Hill-Climbing Algorithmic] Solution for "
+              f"Iteration #{str(idx + 1)}:")
 
-        hill_climbing = HillClimbing()
-        
-        x2points = np.append(x2points, idx + 2)
-        y2points = np.append(y2points, hill_climbing.run())
-        
-    # for x2 in range(int(len(hillresults) / ITERATIONS)):
-    #     x2point = x2 * ITERATIONS
-    #     y2point = 0
-        
-    #     for y2 in range(ITERATIONS):
-    #         y2point += hillresults[x2 * ITERATIONS + y2]
-        
-    #     y2point /= ITERATIONS
-        
-    #     x2points.append(x2point)
-    #     y2points.append(y2point)
+        y2points.append(HillClimbing.run())
 
-    
     print("./WOBR.sh: BOTH GENETIC & HILL-CLIMBING ALGORITHMS COMPLETE.")
     print("./WOBR.sh: GENERATING SITUATIONAL REPORT...")
-    
-    sitrep(x1points, x2points, y1points, y2points)#, supercowmode="ye")
+
+    sitrep(x1points, x2points, y1points, y2points)
+
+    print("./WOBR.sh: SITUATIONAL REPORT GENERATED. SEE wobr.png FOR RESULTS.")
+    print("./WOBR.sh: SHUTTING DOWN... (END)")
 
 if __name__ == "__main__":
     if sys.version_info.major >= 3:
         print(f"./WOBR.sh: ADEQUATE SYSTEM FRAME LEVEL OF AT LEAST THREE [3] "
-              f"DETECTED: {identifypy()}...")
+              f"DETECTED: {python_version()}...")
+
+        # shameless War Games reference here (WOPR; "War Operations Plan Response")
+        print("./WOBR.sh: INITIALIZING WAR OPERATIONS BATTLESHIP REACTOR...")
+
+        main()
+    # skip running if out of date Python version
     elif sys.version_info.major <= 2:
         print("./WOBR.sh: [ALERT] SYSTEM FRAME LEVEL BELOW AT LEAST [3] MAY "
               "CAUSE OPERATIONAL CONFLICTS.")
-        print(f"./WOBR.sh: DETECTED SYSTEM FRAME LEVEL: {identifypy()}. "
+        print(f"./WOBR.sh: DETECTED SYSTEM FRAME LEVEL: {python_version()}. "
               f"CONSIDER USING {{PYTHON 3}} OR HIGHER.")
-
-    # shameless War Games reference here (WOPR; "War Operations Plan Response")
-    print("./WOBR.sh: INITIALIZING WAR OPERATIONS BATTLESHIP REACTOR...")
-
-    main()
