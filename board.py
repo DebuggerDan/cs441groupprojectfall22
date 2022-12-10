@@ -8,6 +8,7 @@ from random import randint
 class Board:
     def __init__(self):
         self.reset()
+        self.remainingsquares = 0
 
     def _check_ship_placement(self, row, col, orientation, length):
         """Checks whether a ship can be placed in a location without colliding
@@ -107,6 +108,8 @@ class Board:
                         self.board[row + (i * r)][col + (i * c)] = "X"
 
                     generated = True
+                    
+        self.remainingsquares = self.remaining_ships()
 
     def remaining_ships(self):
         """Counts ships remaining on the board."""
@@ -115,7 +118,7 @@ class Board:
         for row in self.guesses:
             count += row.count("X")
 
-        return 5 - count
+        return count
 
     def complete(self):
         """Checks if game is complete (all ships sunk).

@@ -31,21 +31,119 @@ import random as rnd
 ## I. Initialization:
 
 # Number of the initial 'guess' boards as the starting population
-INITIAL_POPULATION = 10
+POPULATION = 100
 
 ROWS = 10
 COLUMNS = 10
 
+MUTATIONRATE = 1
 
-class GeneticAlgorithm:
-    @staticmethod
-    def _mutate():
-        pass
+# class Moves:
 
-    @staticmethod
-    def _reproduce():
-        pass
+## II. Helper Functions:
 
-    @staticmethod
-    def run():
-        pass
+class GuessPos:
+    def __init__(self, pos=None):
+        self.pos = pos if pos else genPos()
+        self.fitness = genFit(self.pos)
+
+def genPos():
+    return genRows()
+
+def genFit(pos):
+    return max
+
+def genRows():
+    pos = list(range(ROWS))
+    rnd.shuffle(pos)
+    
+    return pos
+
+def genBoard(self):
+    if self.initialBoard is None:
+        newboard = Board()
+        print("./WOBR.sh: INITIALIZATION OF GENETIC ALGORITHM...")
+        newboard.create_ships()
+        print("./WOBR.sh: INITIAL BOARD GENERATED AS FOLLOWS:")
+        newboard.print_board(False)
+        return newboard
+    else:
+        newboard = Board()
+        newboard.create_ships()
+        return newboard
+
+def random():
+    randompos = []
+
+    for _ in range(self.rownum):
+        randompos.append(rnd.randrange(0, self.colnum))
+
+def initialPopulation(populationsize):
+    #initBoard = initialBoard if initialBoard else self.initialBoard
+    thehighseas = []
+    
+    for _ in range(populationsize):
+        thehighseas.append(Board())
+
+
+## III. Genetic Algorithm:
+# class GeneticAlgorithm(self, (if available parameters to follow:) initialBoard, initialPopulation, population, mutagen, rownum, colnum)
+# class GeneticAlgorithm:
+#     def __init__(self, initialBoard=None, popsize=None, initialPopulation=None, mutagen=None, rownum=None, colnum=None):
+#         self.initialBoard = initialBoard if initialBoard else genBoard()
+#         self.popsize = popsize if popsize else POPULATION
+#         self.initialPopulation = initialPopulation if initialPopulation else initialPopulation(self.popsize)
+#         self.mutagen = mutagen if mutagen else MUTATIONRATE
+#         self.rownum = rownum if rownum else ROWS
+#         self.colnum = colnum if colnum else COLUMNS
+#         self.shipsquares = 0
+    
+    # def random(self):
+    #     randompos = []
+
+    #     for _ in range(self.rownum):
+    #         randompos.append(rnd.randrange(0, self.colnum))
+            
+def genRows(self):
+    pos = list(range(self.rownum))
+    rnd.shuffle(pos)
+    return pos
+
+def attackCrossover(self, col1, col2, row1, row2):
+    return (row1 + col1) == (row2 + col2) or \
+        ((self.rownum - 1 - row1) + col1) == ((self.rownum - 1 - row2) + col2)
+        
+def attackHorizontal(row1, row2):
+    return row1 == row2
+
+def attack(self, col1, col2, row1, row2):
+    return self.attackCrossover(col1, col2, row1, row2) \
+        or self.attackHorizontal(row1, row2)
+        
+def uniqueCrossover(self, firstparent, secondparent):
+    firstchild, secondchild = uniqueCriss(firstparent, secondparent)
+    
+    firstchild = self.mutation(firstchild)
+    secondchild = self.mutation(secondchild)
+    
+    return ChessPos(firstchild), ChessPos(secondchild)
+    
+@staticmethod
+def mutation(self, child):
+    if rnd.uniform(0,1) < self.mutagen / 100:
+        idx = rnd.sample(range(0, self.colnum), 2)
+        curr = child[idx[0]]
+        
+        child[idx[0]] = child[idx[1]]
+        child[idx[1]] = curr
+        
+        return child
+    pass
+
+@staticmethod
+def _reproduce():
+    pass
+
+@staticmethod
+def run():
+    pass
