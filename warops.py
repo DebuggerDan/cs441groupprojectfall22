@@ -18,12 +18,12 @@ def sitrep(x1, x2, y1, y2, supercowmode=None):
         p.plot(x1, y1, label = 'Player #1 (Genetic Algorithm) Results')
         p.plot(x2, y2, label = 'Player #2 (Hill-Climbing Algorithm) Results')
 
-        p.title('WOBR: Player #1 (Genetic Algorithm) vs. Player #2 (Hill-Climbing Algorithm)')
+        p.title('WOBR: Player #1 (Genetic) vs. Player #2 (Hill-Climbing)')
         p.xlabel('# [Iteration(s)] of Game(s) Played')
-        p.ylabel('Performance (fitness, lower-values correlate to higher-performance)')
+        p.ylabel('Fitness (# ship-squares left) (lower = better)')
 
-        p.xlim([0, 10])
-        p.ylim([0, 50])
+        p.xlim([1, 10])
+        p.ylim([0, 25])
         
         p.legend()
         # p.show()

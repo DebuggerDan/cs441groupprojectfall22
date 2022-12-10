@@ -35,10 +35,10 @@ OPPONENT_ONE = 1
 def main():
     print("./WOBR.sh: WELCOME, GENERAL.")
 
-    x1points = np.empty(1)
-    x2points = np.empty(1)
-    y1points = np.empty(1)
-    y2points = np.empty(1)
+    x1points = []
+    x2points = []
+    y1points = []
+    y2points = []
     
    # x1points = np.append(x1points, 0)
     #y1points = np.append(y1points, 0)
@@ -51,7 +51,7 @@ def main():
     genalgo = GeneticAlgorithm(POPULATIONSIZE, MUTATIONRATE, CROSSOVERRATE,
                                 ELITES, TOURNAMENT)
         
-    x1points = np.append(x1points, 0)
+    x1points = np.append(x1points, 1)
     y1points = np.append(y1points, genalgo.run(GENERATIONS))
     
     for idx in range(ITERATIONS - 1):
@@ -59,7 +59,7 @@ def main():
         genalgo = GeneticAlgorithm(POPULATIONSIZE, MUTATIONRATE, CROSSOVERRATE,
                                 ELITES, TOURNAMENT)
         
-        x1points = np.append(x1points, idx + 1)
+        x1points = np.append(x1points, idx + 2)
         y1points = np.append(y1points, genalgo.run(GENERATIONS))
         
     # for x1 in range(int(len(geneticresults) / ITERATIONS)):
@@ -82,7 +82,7 @@ def main():
 
     hill_climbing = HillClimbing()
     
-    x2points = np.append(x2points, 0)
+    x2points = np.append(x2points, 1)
     y2points = np.append(y2points, hill_climbing.run())
     
     for idx in range(ITERATIONS - 1):
@@ -91,7 +91,7 @@ def main():
 
         hill_climbing = HillClimbing()
         
-        x2points = np.append(x2points, idx + 1)
+        x2points = np.append(x2points, idx + 2)
         y2points = np.append(y2points, hill_climbing.run())
         
     # for x2 in range(int(len(hillresults) / ITERATIONS)):
@@ -110,7 +110,7 @@ def main():
     print("./WOBR.sh: BOTH GENETIC & HILL-CLIMBING ALGORITHMS COMPLETE.")
     print("./WOBR.sh: GENERATING SITUATIONAL REPORT...")
     
-    sitrep(x1points, x2points, y1points, y2points, supercowmode="Bruh")
+    sitrep(x1points, x2points, y1points, y2points)#, supercowmode="ye")
 
 if __name__ == "__main__":
     if sys.version_info.major >= 3:
