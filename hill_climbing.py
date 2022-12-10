@@ -44,7 +44,10 @@ class HillClimbing:
             current_cycle += 1
 
         sum_tries = sum(all_tries)
-        print(f"Completed in {sum_tries} tries, with an average of "
+        print(f"./WOBR.sh: [HILL-CLIMBING ALGORITHM] Completed in {sum_tries} tries, with an average of "
               f"{round(sum_tries / len(all_tries), 1)} per successor. "
               f"Final result:")
         guess.print_board()
+        
+        avgfitness = round(sum_tries) / len(all_tries)
+        return avgfitness

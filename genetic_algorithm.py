@@ -38,9 +38,10 @@ class GeneticAlgorithm:
     def genChild(self, num):
         newguessboard = Board()
         newguessboard.create_ships()
-        print("./WOBR.sh: [GENETIC ALGORITHM] INITIAL POPULATION GUESSBOARD #" +
-              f"{str(num + 1)}:")
-        newguessboard.print_board()
+        if num == 0 or num == 99:
+            print("./WOBR.sh: [GENETIC ALGORITHM] INITIAL POPULATION GUESSBOARD #" +
+                f"{str(num + 1)}:")
+            newguessboard.print_board()
         return newguessboard
 
     def randMove(self):
@@ -155,6 +156,8 @@ class GeneticAlgorithm:
         print("./WOBR.sh: Best Fitness Score:")
         print(str(bestfitdata))
         print()
-        print("./WOBR.sh: Initial Genetic Algorithm Population Fitness "
+        print("./WOBR.sh: Average Genetic Algorithm Population Fitness "
               "(Note: Lower Value = Higher Fitness):")
         print(str(avgfitdata))
+
+        return avgfitdata
