@@ -79,15 +79,23 @@ class GeneticAlgorithm:
         
     def init_population(self):
         population = []
-        for _ in range(0, self.populationsize):
-            population.append(self.generate_child())
+        for idx in range(0, self.populationsize):
+            population.append(self.genChild(idx))
         return population
     
-    def generate_child(self):
-        child = []
-        for _ in range(0, self.childlength):
-            child.append(rnd.randint(0, 1))
-        return child
+    def genChild(self, num):
+        # child = []
+        # for _ in range(0, self.childlength):
+        #     child.append(rnd.randint(0, 1))
+        # return child
+        newguessboard = Board()
+        newguessboard.create_ships()
+        print("./WOBR.sh: [GENETIC ALGORITHM] INITIAL POPULATION GUESSBOARD #" + str(num) + ":")
+        newguessboard.print_board()
+        return newguessboard
+    
+    def randMove(self):
+        return self.population[rnd.randint(0, len(self.population) - 1)]
     
     def guessMove(hboard, gboard):
         guessPos = rnd.randint(0, 99)
@@ -111,77 +119,107 @@ class GeneticAlgorithm:
     # IIIa. Genetic Algorithm: Calculation Helper Functions 
         
     def getFit(self, child):
-        fitness = 0
-        for idx in range(0, len(child)):
-            if child[idx] == 1:
-                fitness += 1
-        return fitness
-
+        # fitness = 0
+        # for idx in range(0, len(child)):
+        #     if child[idx] == 1:
+        #         fitness += 1
+        # return fitness
+        return child.remaining_squares()
       
-    def getPopFit(self, population):
-        population_fitness = 0
-        for idx in range(0, len(population)):
-            population_fitness += self.getFit(population[idx])
-        return population_fitness
+    def getAvgFit(self):
+        avgFit = 0
+        
+        for i in range(len(self.population)):
+            avgFit += self.getFit(self.population[i])
+            
+        result = avgFit / len(self.population)
+        return result
     
-    
-    def getBestChild(self, population):
-        best = population[0]
-        for idx in range(0, len(population)):
-            if self.getFit(population[idx]) > self.getFit(best):
-                best = population[idx]
+    def getBestChild(self):
+        best = None
+        for idx in range(0, len(self.population)):
+            if best is None or self.getFit(self.population[idx]) > self.getFit(best):
+                best = self.population[idx]
         return best
     
     # IIIb. Genetic Algorithm: Mutation, Selection, & Crossover-Evolution Functions
     
     def mutate(self, child):
-        for idx in range(0, len(child)):
-            if rnd.random() < self.mutagenrate:
-                if child[idx] == 0:
-                    child[idx] = 1
-                else:
-                    child[idx] = 0
+        # for idx in range(0, len(child)):
+        #     if rnd.randMove() < self.mutagenrate:
+        #         if child[idx] == 0:
+        #             child[idx] = 1
+        #         else:
+        #             child[idx] = 0
+        # return child
+        child.reset()
+        child.create_ships()
         return child
 
-    def selection(self, population):
-        currpopulation = []
-        mutagenrate = 0
-        if self.elites:
-            currpopulation.append(self.getBestChild(population))
-            mutagenrate = 1
-        for _ in range(mutagenrate, len(population)):
-            parent1 = self.tourny(population)
-            parent2 = self.tourny(population)
+    def selection(self):
+        newpopulation = []
+        
+        for idx in range(self.elites):
+            newpopulation.append(self.population[idx])
+            
+        for _ in range(self.elites, self.populationsize):
+            parent1 = self.tourny()
+            parent2 = self.tourny()
             child = self.crossover(parent1, parent2)
-            currpopulation.append(self.mutate(child))
-        return currpopulation
+            
+            if rnd.randint(0, len(self.population) - 1) < self.mutagenrate:
+                child = self.mutate(child)
+                
+            newpopulation.append(child)
+        self.population = newpopulation
+        return self.population
 
-    def tourny(self, population):
-        tourny = []
-        for _ in range(0, self.tournamentsize):
-            random_id = rnd.randint(0, len(population) - 1)
-            tourny.append(population[random_id])
-        tournament_best = tourny[0]
-        for idx2 in range(0, len(tourny)):
-            if self.getFit(tourny[idx2]) > self.getFit(tournament_best):
-                tournament_best = tourny[idx2]
-        return tournament_best
+    def tourny(self):
+        highlander = None
+        for _ in range(self.tournamentsize):
+            idx = rnd.randint(0, len(self.population) - 1)
+            if highlander is None or self.getFit(self.population[idx]) > self.getFit(highlander):
+                highlander = self.population[idx]
+        return highlander
 
     def crossover(self, parent1, parent2):
-        child = []
-        for idx in range(0, len(parent1)):
-            if rnd.random() < self.crossoverrate and idx > 0:
-                child.append(parent1[idx])
-            else:
-                child.append(parent2[idx])
+        child = Board()
+        for idx1 in range(len(parent1.board)):
+        #     if rnd.randMove() < self.crossoverrate and idx > 0:
+        #         child.append(parent1[idx])
+        #     else:
+        #         child.append(parent2[idx])
+        # return child
+            for idx2 in range(len(parent1.board[idx1])):
+                if rnd.randint(0, len(self.population) - 1) < self.crossoverrate:
+                    child.board[idx1][idx2] = parent1.board[idx1][idx2]
+                else:
+                    child.board[idx1][idx2] = parent2.board[idx1][idx2]
+        
         return child
     
     # IIIc. Genetic Algorithm: Initialization Functions
     
-    def run(self, epochs):
-        population = self.init_population()
-        for _ in range(0, epochs):
-            population = self.selection(population)
+    def algo(self, generations):
+        bestfitdata = []
+        avgfitdata = []
+        best = None
+        #population = self.init_population()
+        
+        for _ in range(0, generations):
+            #population = self.selection(population)
+            self.selection()
+            if best is None or self.getFit(self.getBestChild()) > self.getFit(best):
+                best = self.getBestChild()
+            bestfitdata.append(self.getFit(self.getBestChild()))
+            avgfitdata.append(self.getAvgFit())
+        
+        return bestfitdata, avgfitdata, best
             
-        print("./WOBR.sh: Initial Genetic Algorithm Population Fitness: " + str(self.getPopFit(population)))
-        return self.getBestChild(population)
+    def run(self, generations):
+        bestfitdata, avgfitdata, best = self.algo(generations)
+        
+        print("./WOBR.sh: Best Battleship Solution:")
+        best.print_board()
+        print("\n./WOBR.sh: Best Fitness Score:\n" + str(bestfitdata))
+        print("\n./WOBR.sh: Initial Genetic Algorithm Population Fitness (Note: Lower Value = Higher Fitness):\n" + str(avgfitdata))

@@ -22,7 +22,7 @@ MUTATION_RATE = 1
 CROSSOVER_RATE = 0.5
 ELITES = 2
 TOURNAMENT = 5
-ITERATIONS = 100
+GENERATIONS = 100
 
 # Opponent values coorrelate to the following:
 # 0 = Manual (User-Input)
@@ -41,9 +41,9 @@ def main():
 
     ## Part A: Genetic Algorithm
     genalgo = GeneticAlgorithm(POPULATIONSIZE, MUTATION_RATE, CROSSOVER_RATE, ELITES, TOURNAMENT)
-    geneticResults = genalgo.run(ITERATIONS)
-    print("\n./WOBR.sh: The Genetic Algorithmic Solution: " + str(geneticResults))
-    print("./WOBR.sh: Fitness : " + str(genalgo.getFit(geneticResults)))
+    genalgo.run(GENERATIONS)
+    #print("\n./WOBR.sh: The Genetic Algorithmic Solution: " + str(geneticResults))
+    #print("./WOBR.sh: Fitness (Note: Lower Value = Higher Fitness): " + str(genalgo.getFit(geneticResults)))
     
     ## Part B: Hill-Climbing Algorithm
     print("\n./WOBR.sh: Hill-Climbing Algorithmic Solution: ")
