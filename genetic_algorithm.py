@@ -4,7 +4,7 @@
 
 import numpy as np
 import math
-import board
+import board as board
 import random as rnd
 
 # function Genetic-Algorithm(population, Fitness-Fn) returns an individual
@@ -50,14 +50,28 @@ MUTATIONRATE = 1
 def genPos():
     return genRows()
 
-def genFit(pos):
-    return max
-
 def genRows():
     pos = list(range(ROWS))
     rnd.shuffle(pos)
     
     return pos
+
+def concurrentAttacks(pos, currboard):
+    attacks = 0
+    
+    for idx1 in range(currboard.totalsquares):
+        for idx2 in range(idx1 + 1, currboard.totalsquares):
+            if attack(idx1, idx2, pos[idx1], pos[idx2]):
+                attacks += 1
+
+    return attacks
+
+def maxConcurrentAttacks():
+    return math.comb(QUEENS, 2)
+
+def genFit(pos):
+    return maxConcurrentAttacks() - concurrentAttacks(pos) + 1
+
 
 def genBoard():
     #if self.initialBoard is None:
@@ -68,22 +82,22 @@ def genBoard():
     #   newboard.print_board(False)
     #    return newboard
     #else:
-        newboard = Board()
+        newboard = board.Board()
         newboard.create_ships()
         return newboard
 
 def random():
     randompos = []
 
-    for _ in range(self.rownum):
-        randompos.append(rnd.randrange(0, self.colnum))
+    for _ in range(ROWS):
+        randompos.append(rnd.randrange(0, COLUMNS))
 
 def initialPopulation(populationsize):
     #initBoard = initialBoard if initialBoard else self.initialBoard
     thehighseas = []
     
     for _ in range(populationsize):
-        thehighseas.append(Board())
+        thehighseas.append(board.Board())
 
 ## III. Genetic Algorithm:
 # class GeneticAlgorithm(self, (if available parameters to follow:) initialBoard, initialPopulation, population, mutagen, rownum, colnum)

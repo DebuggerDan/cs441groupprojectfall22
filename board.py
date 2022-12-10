@@ -30,8 +30,7 @@ def genRows(boardtype):
     
 # def genFitness(boardtype):
 #     if boardtype == 1: # 1 = Genetic Algorithm
-        
-        
+
 
 # II. Board Class
 
@@ -39,6 +38,7 @@ class Board:
     def __init__(self, boardtype=None, pos=None, fitness=None):
         self.reset()
         self.remainingsquares = 0
+        self.totalsquares = 0
         self.boardtype = boardtype if boardtype else 1
         self.pos = pos if pos else genPos(self.boardtype)
         self.fitness = fitness if fitness else 0
@@ -79,6 +79,8 @@ class Board:
         """Resets the board."""
         self.board = [[' '] * 10 for _ in range(10)]
         self.guesses = [[' '] * 10 for _ in range(10)]
+        self.remainingships = 0
+        self.totalsquares = 0
 
     def print_board(self, guesses=True):
         """Prints the board to the command line.
@@ -142,7 +144,7 @@ class Board:
 
                     generated = True
                     
-        self.remainingsquares = self.remaining_ships()
+        self.remainingsquares, self.totalsquares = self.remaining_ships()
 
     def remaining_ships(self):
         """Counts ships remaining on the board."""
@@ -169,7 +171,7 @@ class Board:
             col (int): column of ship
 
         Returns:
-            int: -1 if already guessed; 0 if hit; 1 if hit
+            int: -1 if already guessed; 0 if not hit; 1 if hit
         """
         if self.guesses[row][col] != " ":
             return -1
@@ -179,4 +181,5 @@ class Board:
             return 0
         else:
             self.guesses[row][col] = "X"
+            self.remainingsquares -= 1
             return 1
