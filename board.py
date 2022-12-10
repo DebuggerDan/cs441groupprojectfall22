@@ -2,13 +2,46 @@
 ### Primary Objectives: class Board(), initialization of ships, turns, & other game miscellany.
 ### Alana G., Dan J., & Evan L.
 
-from random import randint
+from random import randint, shuffle, randrange
 
+
+## I. Initialization:
+
+# Number of the initial 'guess' boards as the starting population
+POPULATION = 100
+
+ROWS = 10
+COLUMNS = 10
+
+MUTATIONRATE = 1
+
+# I. Helper Functions
+
+def genPos(boardtype):
+    return genRows(boardtype)
+
+def genRows(boardtype):
+    if boardtype == 1: # 1 = Genetic Algorithm
+        pos = list(range)
+        shuffle(pos)
+        
+        return pos
+    # if boardtype == 2: #2 = Hill-Climbing Algorithm
+    
+# def genFitness(boardtype):
+#     if boardtype == 1: # 1 = Genetic Algorithm
+        
+        
+
+# II. Board Class
 
 class Board:
-    def __init__(self):
+    def __init__(self, boardtype=None, pos=None, fitness=None):
         self.reset()
         self.remainingsquares = 0
+        self.boardtype = boardtype if boardtype else 1
+        self.pos = pos if pos else genPos(self.boardtype)
+        self.fitness = fitness if fitness else 0
 
     def _check_ship_placement(self, row, col, orientation, length):
         """Checks whether a ship can be placed in a location without colliding

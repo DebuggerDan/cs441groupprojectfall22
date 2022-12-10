@@ -4,7 +4,7 @@
 
 import numpy as np
 import math
-from board import Board
+import board
 import random as rnd
 
 # function Genetic-Algorithm(population, Fitness-Fn) returns an individual
@@ -42,10 +42,10 @@ MUTATIONRATE = 1
 
 ## II. Helper Functions:
 
-class GuessPos:
-    def __init__(self, pos=None):
-        self.pos = pos if pos else genPos()
-        self.fitness = genFit(self.pos)
+# class Guess:
+#     def __init__(self, pos=None):
+#         self.pos = pos if pos else genPos()
+#         self.fitness = genFit(self.pos)
 
 def genPos():
     return genRows()
@@ -59,15 +59,15 @@ def genRows():
     
     return pos
 
-def genBoard(self):
-    if self.initialBoard is None:
-        newboard = Board()
-        print("./WOBR.sh: INITIALIZATION OF GENETIC ALGORITHM...")
-        newboard.create_ships()
-        print("./WOBR.sh: INITIAL BOARD GENERATED AS FOLLOWS:")
-        newboard.print_board(False)
-        return newboard
-    else:
+def genBoard():
+    #if self.initialBoard is None:
+    #    newboard = Board()
+    #    print("./WOBR.sh: INITIALIZATION OF GENETIC ALGORITHM...")
+    #    newboard.create_ships()
+    #    print("./WOBR.sh: INITIAL BOARD GENERATED AS FOLLOWS:")
+    #   newboard.print_board(False)
+    #    return newboard
+    #else:
         newboard = Board()
         newboard.create_ships()
         return newboard
@@ -84,7 +84,6 @@ def initialPopulation(populationsize):
     
     for _ in range(populationsize):
         thehighseas.append(Board())
-
 
 ## III. Genetic Algorithm:
 # class GeneticAlgorithm(self, (if available parameters to follow:) initialBoard, initialPopulation, population, mutagen, rownum, colnum)
@@ -104,31 +103,31 @@ def initialPopulation(populationsize):
     #     for _ in range(self.rownum):
     #         randompos.append(rnd.randrange(0, self.colnum))
             
-def genRows(self):
+def genRows():#self):
     pos = list(range(self.rownum))
     rnd.shuffle(pos)
     return pos
 
-def attackCrossover(self, col1, col2, row1, row2):
+def attackCrossover(col1, col2, row1, row2):
     return (row1 + col1) == (row2 + col2) or \
         ((self.rownum - 1 - row1) + col1) == ((self.rownum - 1 - row2) + col2)
         
 def attackHorizontal(row1, row2):
     return row1 == row2
 
-def attack(self, col1, col2, row1, row2):
+def attack(col1, col2, row1, row2):
     return self.attackCrossover(col1, col2, row1, row2) \
         or self.attackHorizontal(row1, row2)
         
-def uniqueCrossover(self, firstparent, secondparent):
+def uniqueCrossover(firstparent, secondparent):
     firstchild, secondchild = uniqueCriss(firstparent, secondparent)
     
-    firstchild = self.mutation(firstchild)
-    secondchild = self.mutation(secondchild)
+    firstchild = mutation(firstchild)
+    secondchild = mutation(secondchild)
     
-    return ChessPos(firstchild), ChessPos(secondchild)
+    return GuessPos(firstchild), GuessPos(secondchild)
     
-@staticmethod
+#@staticmethod
 def mutation(self, child):
     if rnd.uniform(0,1) < self.mutagen / 100:
         idx = rnd.sample(range(0, self.colnum), 2)
@@ -140,10 +139,10 @@ def mutation(self, child):
         return child
     pass
 
-@staticmethod
+#@staticmethod
 def _reproduce():
     pass
 
-@staticmethod
+#@staticmethod
 def run():
     pass
