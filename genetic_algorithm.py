@@ -1,3 +1,7 @@
+### CS 441, Fall 2022 - Group Project: Battleships - Genetic Algorithm
+### Primary Objectives: class GeneticAlgorithm(), helper functions, & misc. data-processing functions.
+### Alana G., Dan J., & Evan L.
+
 # function Genetic-Algorithm(population, Fitness-Fn) returns an individual
 #     inputs: population, a set of individuals
 #             Fitness-Fn, a function that measures the fitness of an individual

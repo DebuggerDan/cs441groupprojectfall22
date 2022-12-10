@@ -1,6 +1,6 @@
-# CS 441, Fall 2022 - Group Project: Battleships - War Operations
-# (Plotting, Strategy, & Miscellaneous Battleship Components)
-# Alana G., Evan L., & Dan J.
+### CS 441, Fall 2022 - Group Project: Battleships - War Operations
+### Primary Objectiveds: Plotting, Strategy, & Miscellaneous Battleship Components)
+### Alana G., Evan L., & Dan J.
 
 import numpy as np
 import matplotlib

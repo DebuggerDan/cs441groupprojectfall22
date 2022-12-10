@@ -1,3 +1,7 @@
+### CS 441, Fall 2022 - Group Project: Battleships - Board Initialization & Setup
+### Primary Objectives: class Board(), initialization of ships, turns, & other game miscellany.
+### Alana G., Dan J., & Evan L.
+
 from random import randint
 
 
